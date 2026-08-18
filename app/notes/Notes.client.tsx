@@ -1,0 +1,71 @@
+'use client';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+
+
+import css from './page.module.css';
+import NoteList from '../../components/NoteList/NoteList';
+import SearchBox from '../../components/SearchBox/SearchBox';
+import { fetchNotes, type FetchNotesResponse } from '@/lib/api';
+import Pagination from '../../components/Pagination/Pagination';
+import Modal from '../../components/Modal/Modal';
+import NoteForm from '../../components/NoteForm/NoteForm';
+
+import { useDebouncedCallback } from 'use-debounce'
+import Loader from '../../components/Loader/Loader';
+import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
+
+const PER_PAGE = 12;
+
+export default function Notes() {
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+
+  const debouncedSetSearch = useDebouncedCallback((value: string) => {
+    setDebouncedSearch(value);
+  }, 500);
+
+  const { data, isSuccess, isError, isLoading } = useQuery<FetchNotesResponse>({
+    queryKey: ['notes', page, PER_PAGE, debouncedSearch],
+    queryFn: () => fetchNotes({ page, perPage: PER_PAGE, search: debouncedSearch }),
+    placeholderData: keepPreviousData
+  });
+
+  const totalPages = data?.totalPages ?? 0;
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+    debouncedSetSearch(event.target.value);
+    setPage(1);
+  };
+  const handlePageChange = (newPage: number) =>setPage(newPage);
+
+  return (
+    <div className={css.App}>
+      <header className={css.toolbar}>
+        <SearchBox searchQuery={search} onSearch={handleSearch} />
+        {isSuccess && totalPages > 1 && (
+          <Pagination
+            pageCount={totalPages}
+            currentPage={page}
+            onPageChange={handlePageChange}
+          />
+        )}
+        <button className={css.button} onClick={()=> setIsModalOpen(true)}>Create note +</button>
+      </header>
+    
+      {isModalOpen && (
+        <Modal onClose={() => setIsModalOpen(false)}>
+          <NoteForm onClose={() =>  setIsModalOpen(false)} />
+        </Modal>
+      )}
+      {isLoading && <Loader />}
+      {isError ? (
+          <ErrorMessage />
+        ) : (
+          data && data.notes.length > 0 && <NoteList notes={data.notes} />
+        )}
+    </div>)
+}

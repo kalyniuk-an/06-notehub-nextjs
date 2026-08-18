@@ -8,13 +8,13 @@ export interface FetchNotesResponse {
 
 interface FetchNotesParams {
   page: number;
-  perPage: number;
+  perPage?: 12;
   search?: string;
   tag?: NoteTag;
   sortBy?: "created" | "updated";
 }
 const API_URL = "https://notehub-public.goit.study/api/notes";
-const token = import.meta.env.VITE_NOTEHUB_TOKEN;
+const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 export async function fetchNotes(params: FetchNotesParams): Promise<FetchNotesResponse> {
   const { page, perPage, search, tag, sortBy } = params;
