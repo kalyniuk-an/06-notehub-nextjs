@@ -1,5 +1,5 @@
-import axios from "axios";
-import type { Note, NoteTag } from "../types/note";
+import axios from 'axios';
+import type { Note, NoteTag } from '../types/note';
 
 export interface FetchNotesResponse {
   notes: Note[];
@@ -57,6 +57,15 @@ interface CreateNoteParams {
 
 export const createNote = async (note: CreateNoteParams): Promise<Note> => {
   const response = await axios.post(`${API_URL}`, note, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response.data;
+}
+
+export const fetchNoteById = async (noteId: string): Promise<Note> => {
+  const response = await axios.get(`${API_URL}/${noteId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }

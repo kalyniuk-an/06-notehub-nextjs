@@ -12,8 +12,6 @@ import Modal from '../../components/Modal/Modal';
 import NoteForm from '../../components/NoteForm/NoteForm';
 
 import { useDebouncedCallback } from 'use-debounce'
-import Loader from '../../components/Loader/Loader';
-import ErrorMessage from '../../components/ErrorMessage/ErrorMessage';
 
 const PER_PAGE = 12;
 
@@ -61,9 +59,9 @@ export default function Notes() {
           <NoteForm onClose={() =>  setIsModalOpen(false)} />
         </Modal>
       )}
-      {isLoading && <Loader />}
+      {isLoading && <p>Loading, please wait...</p>}
       {isError ? (
-          <ErrorMessage />
+          <p>Something went wrong.</p>
         ) : (
           data && data.notes.length > 0 && <NoteList notes={data.notes} />
         )}
