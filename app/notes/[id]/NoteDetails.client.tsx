@@ -4,7 +4,7 @@ import { fetchNoteById } from '@/lib/api';
 import { useParams } from 'next/navigation';
 import css from "./NoteDetails.module.css";
 import { Note } from '@/types/note';
-import Loader from '@/app/Loader';
+import Loader from '@/app/loading';
 
 export default function NoteDetails() {
   const { id } = useParams<{ id: string }>();
