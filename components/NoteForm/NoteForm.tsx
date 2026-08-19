@@ -69,7 +69,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           rows={8}
           className={css.textarea}
         />
-        <ErrorMessage name="content" className={css.error} />
+        <ErrorMessage name="content" component="span" className={css.error} />
       </div>
 
       <div className={css.formGroup}>
@@ -86,7 +86,7 @@ export default function NoteForm({ onClose }: NoteFormProps) {
           <option value="Meeting">Meeting</option>
           <option value="Shopping">Shopping</option>
         </Field>
-        <ErrorMessage name="tag" className={css.error} />
+        <ErrorMessage name="tag" component="span" className={css.error} />
       </div>
 
       <div className={css.actions}>
