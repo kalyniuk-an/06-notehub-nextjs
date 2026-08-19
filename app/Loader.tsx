@@ -1,5 +1,3 @@
-import css from "./globals.css";
-
 export default function Loader() {
-  return ( <p className={css.text}>Loading movies, please wait...</p> );
+  return ( <p>Loading, please wait...</p> );
 }
