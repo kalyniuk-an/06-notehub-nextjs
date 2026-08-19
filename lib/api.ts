@@ -31,7 +31,7 @@ export async function fetchNotes(params: FetchNotesParams): Promise<FetchNotesRe
   if (sortBy) {
     query.sortBy = sortBy;
   }
-  const response = await axios.get(`${API_URL}`, {
+  const response = await axios.get<FetchNotesResponse>(`${API_URL}`, {
     headers: {
       Authorization: `Bearer ${token}`
     },
@@ -41,7 +41,7 @@ export async function fetchNotes(params: FetchNotesParams): Promise<FetchNotesRe
 };
 
 export const deleteNote = async (noteId: string): Promise<Note> => {
-  const response = await axios.delete(`${API_URL}/${noteId}`, {
+  const response = await axios.delete<Note>(`${API_URL}/${noteId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -56,7 +56,7 @@ interface CreateNoteParams {
 }
 
 export const createNote = async (note: CreateNoteParams): Promise<Note> => {
-  const response = await axios.post(`${API_URL}`, note, {
+  const response = await axios.post<Note>(`${API_URL}`, note, {
     headers: {
       Authorization: `Bearer ${token}`
     }
@@ -65,7 +65,7 @@ export const createNote = async (note: CreateNoteParams): Promise<Note> => {
 }
 
 export const fetchNoteById = async (noteId: string): Promise<Note> => {
-  const response = await axios.get(`${API_URL}/${noteId}`, {
+  const response = await axios.get<Note>(`${API_URL}/${noteId}`, {
     headers: {
       Authorization: `Bearer ${token}`
     }
